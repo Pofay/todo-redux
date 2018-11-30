@@ -1,9 +1,7 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, takeEvery } from "redux-saga/effects";
 import firestore from "./datastore/firestore";
 
 function* addTodo(action) {
-  yield put({ ...action, type: "ADD-TODO" });
-
   yield call(
     action =>
       firestore
@@ -18,8 +16,6 @@ function* addTodo(action) {
 }
 
 function* toggleTodo(action) {
-  yield put({ ...action, type: "TOGGLE-TODO" });
-
   yield call(
     action =>
       firestore

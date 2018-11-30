@@ -1,5 +1,3 @@
-import { uniq } from "ramda";
-
 const todo = (state, action) => {
   switch (action.type) {
     case "ADD-TODO":
@@ -21,7 +19,7 @@ export function todos(state, action) {
   if (typeof state === "undefined") return [];
   switch (action.type) {
     case "ADD-TODO":
-      return uniq([...state, todo(undefined, action)]);
+      return [...state, todo(undefined, action)];
     case "TOGGLE-TODO":
       return state.map(t => todo(t, action));
     default:
