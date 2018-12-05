@@ -53,14 +53,13 @@ class TodoInput extends React.Component {
 
   render() {
     return (
-      <div>
-        <InputLabel
-          style={{
-            display: "block",
-            marginTop: "2%",
-            marginBottom: "2%"
-          }}
-        >
+      <form
+        onSubmit={() => {
+          this.callback(this.Input.value, uuidv1());
+          this.Input.value = "";
+        }}
+      >
+        <InputLabel style={{ display: "block" }}>
           <b>What needs to be done?</b>
         </InputLabel>
         <Input
@@ -69,21 +68,28 @@ class TodoInput extends React.Component {
           }}
           style={{ marginRight: "1%" }}
           placeholder="Enter Todo Name:"
+          required
         />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            this.callback(this.Input.value, uuidv1());
-            this.Input.value = "";
-          }}
-        >
+        <Button type="submit" variant="contained" color="primary">
           Add Todo
         </Button>
-      </div>
+      </form>
     );
   }
 }
+
+const TodoFilter = ({ currentFilter, filterValues, onChange }) => {
+  return (
+    <FormControl style={{ width: "20%" }}>
+      <InputLabel>Filter Todos</InputLabel>
+      <Select value={currentFilter} onChange={onChange}>
+        {filterValues.map(f => (
+          <MenuItem value={f.value}>{f.key}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
 
 class TodoApp extends React.Component {
   constructor(props) {
@@ -147,18 +153,20 @@ class TodoApp extends React.Component {
   render() {
     const { todos, visibilityFilter } = this.store.getState();
     const filteredTodos = filterTodos(todos, visibilityFilter);
+    const filterValues = [
+      { key: "All", value: "SHOW_ALL" },
+      { key: "Completed", value: "SHOW_COMPLETED" },
+      { key: "Active", value: "SHOW_ACTIVE" }
+    ];
 
     return (
       <div style={{ marginLeft: "4%" }}>
         <TodoInput callback={this.handleSubmit} />
-        <FormControl style={{ width: "20%" }}>
-          <InputLabel>Filter Todos</InputLabel>
-          <Select value={visibilityFilter} onChange={this.handleChange}>
-            <MenuItem value={"SHOW_ALL"}>All</MenuItem>
-            <MenuItem value={"SHOW_COMPLETED"}>Completed</MenuItem>
-            <MenuItem value={"SHOW_ACTIVE"}>Active</MenuItem>
-          </Select>
-        </FormControl>
+        <TodoFilter
+          currentFilter={visibilityFilter}
+          filterValues={filterValues}
+          onChange={this.handleChange}
+        />
         <TodoList todos={filteredTodos} callback={this.handleOnClick} />
       </div>
     );
