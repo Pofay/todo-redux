@@ -11,7 +11,7 @@ import firestore from "./datastore/firestore";
 import rootSaga from "./sagas";
 import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 //const todoReducer = todos; // The name of the reducer is the property
 // name inside the state tree in redux.
