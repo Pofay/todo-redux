@@ -31,14 +31,17 @@ const TodoItem = ({ text, completed, onClick }) => (
   </ListItem>
 );
 
-const TodoList = ({ todos, callback }) => (
+const TodoList = ({ todos, toggleTodo }) => (
   <div style={{ marginRight: "55%" }}>
     <List>
       {todos.map(t => (
         <TodoItem
           key={t.id}
           {...t}
-          onClick={() => callback(t.id, t.completed)}
+          onClick={event => {
+            event.preventDefault();
+            toggleTodo(t.id, t.completed);
+          }}
         />
       ))}
     </List>
@@ -48,14 +51,14 @@ const TodoList = ({ todos, callback }) => (
 class TodoInput extends React.Component {
   constructor(props) {
     super(props);
-    this.callback = props.callback;
+    this.addTodo = props.addTodo;
   }
 
   render() {
     return (
       <form
-        onSubmit={() => {
-          this.callback(this.Input.value, uuidv1());
+        onSubmit={event => {
+          this.addTodo(event, this.Input.value);
           this.Input.value = "";
         }}
       >
@@ -78,11 +81,11 @@ class TodoInput extends React.Component {
   }
 }
 
-const TodoFilter = ({ currentFilter, filterValues, onChange }) => {
+const TodoFilter = ({ currentFilter, filterValues, changeFilter }) => {
   return (
     <FormControl style={{ width: "20%" }}>
       <InputLabel>Filter Todos</InputLabel>
-      <Select value={currentFilter} onChange={onChange}>
+      <Select value={currentFilter} onChange={changeFilter}>
         {filterValues.map(f => (
           <MenuItem value={f.value}>{f.key}</MenuItem>
         ))}
@@ -94,9 +97,9 @@ const TodoFilter = ({ currentFilter, filterValues, onChange }) => {
 class TodoApp extends React.Component {
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleOnClick = this.handleOnClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.addTodo = this.addTodo.bind(this);
+    this.toggleTodo = this.toggleTodo.bind(this);
+    this.changeVisibilityFilter = this.changeVisibilityFilter.bind(this);
     this.store = this.props.store;
     this.db = this.props.db;
   }
@@ -125,15 +128,16 @@ class TodoApp extends React.Component {
     });
   }
 
-  handleSubmit(textInput, id) {
+  addTodo(event, textInput) {
+    event.preventDefault();
     this.store.dispatch({
       type: "ADD-TODO-REQUEST",
-      id: id,
+      id: uuidv1(),
       text: textInput
     });
   }
 
-  handleOnClick(todoId, completed) {
+  toggleTodo(todoId, completed) {
     this.store.dispatch({
       type: "TOGGLE-TODO-REQUEST",
       id: todoId,
@@ -141,7 +145,7 @@ class TodoApp extends React.Component {
     });
   }
 
-  handleChange(event) {
+  changeVisibilityFilter(event) {
     event.preventDefault();
     const filter = event.target.value;
     this.store.dispatch({
@@ -161,13 +165,13 @@ class TodoApp extends React.Component {
 
     return (
       <div style={{ marginLeft: "4%" }}>
-        <TodoInput callback={this.handleSubmit} />
+        <TodoInput addTodo={this.addTodo} />
         <TodoFilter
           currentFilter={visibilityFilter}
           filterValues={filterValues}
-          onChange={this.handleChange}
+          changeFilter={this.changeVisibilityFilter}
         />
-        <TodoList todos={filteredTodos} callback={this.handleOnClick} />
+        <TodoList todos={filteredTodos} toggleTodo={this.toggleTodo} />
       </div>
     );
   }
