@@ -2,6 +2,8 @@ import { call, takeEvery } from "redux-saga/effects";
 import firestore from "./datastore/firestore";
 
 function* addTodo(action) {
+  console.log(action)
+
   yield call(
     action =>
       firestore

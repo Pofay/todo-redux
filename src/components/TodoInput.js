@@ -2,18 +2,27 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
+import { connect } from "react-redux";
+import uuidv1 from "uuid/v1";
+
+const mapDispatchToProps = dispatch => {
+  return {
+    issueAddTodo: content =>
+      dispatch({ type: "ADD-TODO-REQUEST", id: uuidv1(), text: content })
+  };
+};
 
 class TodoInput extends React.Component {
   constructor(props) {
     super(props);
-    this.addTodo = props.addTodo;
   }
 
   render() {
     return (
       <form
         onSubmit={event => {
-          this.addTodo(event, this.Input.value);
+          event.preventDefault();
+          this.props.issueAddTodo(this.Input.value);
           this.Input.value = "";
         }}
       >
@@ -36,4 +45,7 @@ class TodoInput extends React.Component {
   }
 }
 
-export default TodoInput;
+export default connect(
+  null,
+  mapDispatchToProps
+)(TodoInput);
