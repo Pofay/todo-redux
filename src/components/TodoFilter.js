@@ -5,7 +5,13 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 
-const TodoFilter = ({ currentFilter, filterValues, changeFilter }) => {
+const filterValues = [
+  { key: "All", value: "SHOW_ALL" },
+  { key: "Completed", value: "SHOW_COMPLETED" },
+  { key: "Active", value: "SHOW_ACTIVE" }
+];
+
+const TodoFilter = ({ currentFilter, changeFilter }) => {
   return (
     <FormControl style={{ width: "20%" }}>
       <InputLabel>Filter Todos</InputLabel>

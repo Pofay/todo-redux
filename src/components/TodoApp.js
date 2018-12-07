@@ -46,18 +46,12 @@ class TodoApp extends React.Component {
 
   render() {
     const { visibilityFilter } = this.store.getState();
-    const filterValues = [
-      { key: "All", value: "SHOW_ALL" },
-      { key: "Completed", value: "SHOW_COMPLETED" },
-      { key: "Active", value: "SHOW_ACTIVE" }
-    ];
 
     return (
       <div style={{ marginLeft: "4%" }}>
         <TodoInput />
         <TodoFilter
           currentFilter={visibilityFilter}
-          filterValues={filterValues}
           changeFilter={this.changeVisibilityFilter}
         />
         <TodoList />
