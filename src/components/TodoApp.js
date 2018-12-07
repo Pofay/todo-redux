@@ -6,7 +6,6 @@ import TodoFilter from "./TodoFilter";
 class TodoApp extends React.Component {
   constructor(props) {
     super(props);
-    this.changeVisibilityFilter = this.changeVisibilityFilter.bind(this);
     this.db = this.props.db;
     this.store = this.props.store;
   }
