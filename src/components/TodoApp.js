@@ -1,23 +1,7 @@
 import React from "react";
 import TodoInput from "./TodoInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import TodoList from "./TodoList";
-import MenuItem from "@material-ui/core/MenuItem";
-
-const TodoFilter = ({ currentFilter, filterValues, changeFilter }) => {
-  return (
-    <FormControl style={{ width: "20%" }}>
-      <InputLabel>Filter Todos</InputLabel>
-      <Select value={currentFilter} onChange={changeFilter}>
-        {filterValues.map(f => (
-          <MenuItem value={f.value}>{f.key}</MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-};
+import TodoFilter from "./TodoFilter";
 
 class TodoApp extends React.Component {
   constructor(props) {
