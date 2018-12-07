@@ -3,17 +3,12 @@ import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
 import TodoFilter from "./TodoFilter";
 import { connect } from "react-redux";
+import { addTodo, toggleTodo } from "../actions";
 
 const mapDispatchToProps = dispatch => ({
   addTodo: (id, content, completed) =>
-    dispatch({ type: "ADD-TODO", id: id, text: content, completed: completed }),
-
-  toggleTodo: (id, completed) =>
-    dispatch({
-      type: "TOGGLE-TODO",
-      id: id,
-      completed: completed
-    })
+    dispatch(addTodo(id, content, completed)),
+  toggleTodo: (id, completed) => dispatch(toggleTodo(id, completed))
 });
 
 class TodoApp extends React.Component {

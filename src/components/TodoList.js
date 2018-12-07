@@ -5,6 +5,7 @@ import Avatar from "@material-ui/core/Avatar";
 import React from "react";
 import { connect } from "react-redux";
 import WorkIcon from "@material-ui/icons/Work";
+import { toggleTodoRequest } from "../actions";
 
 const mapStateToProps = state => ({
   todos: filterTodos(state.todos, state.visibilityFilter)
@@ -13,7 +14,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     issueToggleTodo: (id, completed) =>
-      dispatch({ type: "TOGGLE-TODO-REQUEST", id: id, completed: !completed })
+      dispatch(toggleTodoRequest(id, completed))
   };
 };
 

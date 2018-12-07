@@ -5,6 +5,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import uuidv1 from "uuid/v1";
+import { setVisibilityFilter } from "../actions";
 
 const filterValues = [
   { key: "All", value: "SHOW_ALL" },
@@ -18,10 +19,7 @@ const mapDispatchToProps = dispatch => ({
   changeFilter: event => {
     const filter = event.target.value;
     event.preventDefault();
-    dispatch({
-      type: "SET_VISIBILITY_FILTER",
-      filter
-    });
+    dispatch(setVisibilityFilter(filter));
   }
 });
 

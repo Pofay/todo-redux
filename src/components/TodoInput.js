@@ -4,11 +4,11 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import { connect } from "react-redux";
 import uuidv1 from "uuid/v1";
+import { addTodoRequest } from "../actions";
 
 const mapDispatchToProps = dispatch => {
   return {
-    issueAddTodo: content =>
-      dispatch({ type: "ADD-TODO-REQUEST", id: uuidv1(), text: content })
+    issueAddTodo: content => dispatch(addTodoRequest(uuidv1(), content))
   };
 };
 
