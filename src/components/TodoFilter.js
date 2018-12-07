@@ -4,6 +4,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
+import uuidv1 from "uuid/v1";
 
 const filterValues = [
   { key: "All", value: "SHOW_ALL" },
@@ -30,7 +31,9 @@ const TodoFilter = ({ currentFilter, changeFilter }) => {
       <InputLabel>Filter Todos</InputLabel>
       <Select value={currentFilter} onChange={changeFilter}>
         {filterValues.map(f => (
-          <MenuItem value={f.value}>{f.key}</MenuItem>
+          <MenuItem key={uuidv1()} value={f.value}>
+            {f.key}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>
