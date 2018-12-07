@@ -2,12 +2,24 @@ import React from "react";
 import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
 import TodoFilter from "./TodoFilter";
+import { connect } from "react-redux";
+
+const mapDispatchToProps = dispatch => ({
+  addTodo: (id, content, completed) =>
+    dispatch({ type: "ADD-TODO", id: id, text: content, completed: completed }),
+
+  toggleTodo: (id, completed) =>
+    dispatch({
+      type: "TOGGLE-TODO",
+      id: id,
+      completed: completed
+    })
+});
 
 class TodoApp extends React.Component {
   constructor(props) {
     super(props);
     this.db = this.props.db;
-    this.store = this.props.store;
   }
 
   componentDidMount() {
@@ -15,19 +27,14 @@ class TodoApp extends React.Component {
       snapshot.docChanges().forEach(change => {
         switch (change.type) {
           case "added":
-            this.store.dispatch({
-              type: "ADD-TODO",
-              id: change.doc.id,
-              text: change.doc.data().text,
-              completed: change.doc.data().completed
-            });
+            this.props.addTodo(
+              change.doc.id,
+              change.doc.data().text,
+              change.doc.data().completed
+            );
             break;
           case "modified":
-            this.store.dispatch({
-              type: "TOGGLE-TODO",
-              id: change.doc.id,
-              completed: change.doc.data().completed
-            });
+            this.props.toggleTodo(change.doc.id, change.doc.data().completed);
             break;
         }
       });
@@ -45,4 +52,7 @@ class TodoApp extends React.Component {
   }
 }
 
-export default TodoApp;
+export default connect(
+  null,
+  mapDispatchToProps
+)(TodoApp);

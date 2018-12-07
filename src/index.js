@@ -30,7 +30,7 @@ sagaMiddleware.run(rootSaga);
 const render = () =>
   ReactDOM.render(
     <Provider store={store}>
-      <TodoApp db={firestore} store={store} />,
+      <TodoApp db={firestore} />,
     </Provider>,
     document.getElementById("root")
   );
