@@ -1,6 +1,5 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input";
+import TodoInput from "./TodoInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -48,39 +47,6 @@ const TodoList = ({ todos, toggleTodo }) => (
   </div>
 );
 
-class TodoInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.addTodo = props.addTodo;
-  }
-
-  render() {
-    return (
-      <form
-        onSubmit={event => {
-          this.addTodo(event, this.Input.value);
-          this.Input.value = "";
-        }}
-      >
-        <InputLabel style={{ display: "block" }}>
-          <b>What needs to be done?</b>
-        </InputLabel>
-        <Input
-          inputRef={node => {
-            this.Input = node;
-          }}
-          style={{ marginRight: "1%" }}
-          placeholder="Enter Todo Name:"
-          required
-        />
-        <Button type="submit" variant="contained" color="primary">
-          Add Todo
-        </Button>
-      </form>
-    );
-  }
-}
-
 const TodoFilter = ({ currentFilter, filterValues, changeFilter }) => {
   return (
     <FormControl style={{ width: "20%" }}>
@@ -100,8 +66,8 @@ class TodoApp extends React.Component {
     this.addTodo = this.addTodo.bind(this);
     this.toggleTodo = this.toggleTodo.bind(this);
     this.changeVisibilityFilter = this.changeVisibilityFilter.bind(this);
-    this.store = this.props.store;
     this.db = this.props.db;
+    this.store = this.props.store;
   }
 
   componentDidMount() {

@@ -10,6 +10,7 @@ import createSagaMiddleware from "redux-saga";
 import firestore from "./datastore/firestore";
 import rootSaga from "./sagas";
 import dotenv from "dotenv";
+import { Provider } from "react-redux";
 
 dotenv.config();
 
@@ -28,7 +29,9 @@ sagaMiddleware.run(rootSaga);
 
 const render = () =>
   ReactDOM.render(
-    <TodoApp db={firestore} store={store} />,
+    <Provider store={store}>
+      <TodoApp db={firestore} store={store} />,
+    </Provider>,
     document.getElementById("root")
   );
 
