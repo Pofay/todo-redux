@@ -1,51 +1,10 @@
 import React from "react";
 import TodoInput from "./TodoInput";
 import InputLabel from "@material-ui/core/InputLabel";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
-import WorkIcon from "@material-ui/icons/Work";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import TodoList from "./TodoList";
 import MenuItem from "@material-ui/core/MenuItem";
-import uuidv1 from "uuid/v1";
-
-// let nextTodoId = 0;
-
-const TodoItem = ({ text, completed, onClick }) => (
-  <ListItem
-    style={{ height: "10%", paddingTop: "1%", paddingBottom: "1%" }}
-    button
-    onClick={onClick}
-  >
-    <Avatar>
-      <WorkIcon />
-    </Avatar>
-    <ListItemText
-      inset
-      primary={text}
-      style={{ textDecoration: completed ? "line-through" : "none" }}
-    />
-  </ListItem>
-);
-
-const TodoList = ({ todos, toggleTodo }) => (
-  <div style={{ marginRight: "55%" }}>
-    <List>
-      {todos.map(t => (
-        <TodoItem
-          key={t.id}
-          {...t}
-          onClick={event => {
-            event.preventDefault();
-            toggleTodo(t.id, t.completed);
-          }}
-        />
-      ))}
-    </List>
-  </div>
-);
 
 const TodoFilter = ({ currentFilter, filterValues, changeFilter }) => {
   return (
@@ -63,7 +22,6 @@ const TodoFilter = ({ currentFilter, filterValues, changeFilter }) => {
 class TodoApp extends React.Component {
   constructor(props) {
     super(props);
-    this.toggleTodo = this.toggleTodo.bind(this);
     this.changeVisibilityFilter = this.changeVisibilityFilter.bind(this);
     this.db = this.props.db;
     this.store = this.props.store;
@@ -93,14 +51,6 @@ class TodoApp extends React.Component {
     });
   }
 
-  toggleTodo(todoId, completed) {
-    this.store.dispatch({
-      type: "TOGGLE-TODO-REQUEST",
-      id: todoId,
-      completed: !completed
-    });
-  }
-
   changeVisibilityFilter(event) {
     event.preventDefault();
     const filter = event.target.value;
@@ -111,8 +61,7 @@ class TodoApp extends React.Component {
   }
 
   render() {
-    const { todos, visibilityFilter } = this.store.getState();
-    const filteredTodos = filterTodos(todos, visibilityFilter);
+    const { visibilityFilter } = this.store.getState();
     const filterValues = [
       { key: "All", value: "SHOW_ALL" },
       { key: "Completed", value: "SHOW_COMPLETED" },
@@ -127,23 +76,10 @@ class TodoApp extends React.Component {
           filterValues={filterValues}
           changeFilter={this.changeVisibilityFilter}
         />
-        <TodoList todos={filteredTodos} toggleTodo={this.toggleTodo} />
+        <TodoList />
       </div>
     );
   }
 }
-
-const filterTodos = (todos, filter) => {
-  switch (filter) {
-    case "SHOW_ALL":
-      return todos;
-    case "SHOW_COMPLETED":
-      return todos.filter(t => t.completed);
-    case "SHOW_ACTIVE":
-      return todos.filter(t => !t.completed);
-    default:
-      return todos;
-  }
-};
 
 export default TodoApp;
