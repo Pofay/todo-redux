@@ -63,7 +63,6 @@ const TodoFilter = ({ currentFilter, filterValues, changeFilter }) => {
 class TodoApp extends React.Component {
   constructor(props) {
     super(props);
-    this.addTodo = this.addTodo.bind(this);
     this.toggleTodo = this.toggleTodo.bind(this);
     this.changeVisibilityFilter = this.changeVisibilityFilter.bind(this);
     this.db = this.props.db;
@@ -91,15 +90,6 @@ class TodoApp extends React.Component {
             break;
         }
       });
-    });
-  }
-
-  addTodo(event, textInput) {
-    event.preventDefault();
-    this.store.dispatch({
-      type: "ADD-TODO-REQUEST",
-      id: uuidv1(),
-      text: textInput
     });
   }
 
@@ -131,7 +121,7 @@ class TodoApp extends React.Component {
 
     return (
       <div style={{ marginLeft: "4%" }}>
-        <TodoInput addTodo={this.addTodo} />
+        <TodoInput />
         <TodoFilter
           currentFilter={visibilityFilter}
           filterValues={filterValues}
