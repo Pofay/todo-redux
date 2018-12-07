@@ -11,6 +11,19 @@ const filterValues = [
   { key: "Active", value: "SHOW_ACTIVE" }
 ];
 
+const mapStateToProps = state => ({ currentFilter: state.visibilityFilter });
+
+const mapDispatchToProps = dispatch => ({
+  changeFilter: event => {
+    const filter = event.target.value;
+    event.preventDefault();
+    dispatch({
+      type: "SET_VISIBILITY_FILTER",
+      filter
+    });
+  }
+});
+
 const TodoFilter = ({ currentFilter, changeFilter }) => {
   return (
     <FormControl style={{ width: "20%" }}>
@@ -24,4 +37,7 @@ const TodoFilter = ({ currentFilter, changeFilter }) => {
   );
 };
 
-export default TodoFilter;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoFilter);

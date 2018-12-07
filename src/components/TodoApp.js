@@ -35,25 +35,11 @@ class TodoApp extends React.Component {
     });
   }
 
-  changeVisibilityFilter(event) {
-    event.preventDefault();
-    const filter = event.target.value;
-    this.store.dispatch({
-      type: "SET_VISIBILITY_FILTER",
-      filter
-    });
-  }
-
   render() {
-    const { visibilityFilter } = this.store.getState();
-
     return (
       <div style={{ marginLeft: "4%" }}>
         <TodoInput />
-        <TodoFilter
-          currentFilter={visibilityFilter}
-          changeFilter={this.changeVisibilityFilter}
-        />
+        <TodoFilter />
         <TodoList />
       </div>
     );
