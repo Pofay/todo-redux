@@ -1,16 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import TodoApp from "./components/TodoApp";
-import { todos } from "./reducers/todoReducer";
-import { visibilityFilter } from "./reducers/visibilityFilter";
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import * as serviceWorker from "./serviceWorker";
-import createSagaMiddleware from "redux-saga";
-import firestore from "./datastore/firestore";
-import rootSaga from "./sagas";
-import dotenv from "dotenv";
-import { Provider } from "react-redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import TodoApp from './components/TodoApp';
+import { todos } from './reducers/todoReducer';
+import { visibilityFilter } from './reducers/visibilityFilter';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import * as serviceWorker from './serviceWorker';
+import createSagaMiddleware from 'redux-saga';
+import firestore from './datastore/firestore';
+import rootSaga from './sagas';
+import dotenv from 'dotenv';
+import { Provider } from 'react-redux';
 
 dotenv.config();
 
@@ -32,11 +32,11 @@ const render = () =>
     <Provider store={store}>
       <TodoApp db={firestore} />,
     </Provider>,
-    document.getElementById("root")
+    document.getElementById('root')
   );
 
-store.subscribe(render);
-store.subscribe(() => console.log(store.getState()));
+// store.subscribe(render);
+// store.subscribe(() => console.log(store.getState()));
 render();
 
 // If you want your app to work offline and load faster, you can change
