@@ -3,37 +3,22 @@ import TodoInput from './TodoInput';
 import TodoList from './TodoList';
 import TodoFilter from './TodoFilter';
 import { connect } from 'react-redux';
-import { addTodo, toggleTodo } from '../actions';
+import { addTodo, toggleTodo, watchTodos, unwatchTodos } from '../actions';
 
 const mapDispatchToProps = dispatch => ({
   addTodo: (id, content, completed) =>
     dispatch(addTodo(id, content, completed)),
-  toggleTodo: (id, completed) => dispatch(toggleTodo(id, completed))
+  toggleTodo: (id, completed) => dispatch(toggleTodo(id, completed)),
+  watchTodos: () => dispatch(watchTodos()),
+  unwatchTodos: () => dispatch(unwatchTodos())
 });
 
 const TodoApp = props => {
-  const { db, addTodo, toggleTodo } = props;
+  const { unwatchTodos, watchTodos } = props;
   useEffect(() => {
-    const unsubscribe = db.collection('todos').onSnapshot(snapshot => {
-      snapshot.docChanges().forEach(change => {
-        switch (change.type) {
-          case 'added':
-            addTodo(
-              change.doc.id,
-              change.doc.data().text,
-              change.doc.data().completed
-            );
-            break;
-          case 'modified':
-            toggleTodo(change.doc.id, change.doc.data().completed);
-            break;
-          default:
-            break;
-        }
-      });
-    });
+    watchTodos();
 
-    return () => unsubscribe();
+    return () => unwatchTodos();
   });
 
   return (
