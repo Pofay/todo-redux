@@ -11,20 +11,21 @@ const mapDispatchToProps = dispatch => ({
   toggleTodo: (id, completed) => dispatch(toggleTodo(id, completed))
 });
 
-const TodoApp = ({ db }) => {
+const TodoApp = props => {
+  const { db, addTodo, toggleTodo } = props;
   useEffect(() => {
     const unsubscribe = db.collection('todos').onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
         switch (change.type) {
           case 'added':
-            this.props.addTodo(
+            addTodo(
               change.doc.id,
               change.doc.data().text,
               change.doc.data().completed
             );
             break;
           case 'modified':
-            this.props.toggleTodo(change.doc.id, change.doc.data().completed);
+            toggleTodo(change.doc.id, change.doc.data().completed);
             break;
           default:
             break;
