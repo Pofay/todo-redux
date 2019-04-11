@@ -1,13 +1,13 @@
-import { call, takeEvery } from "redux-saga/effects";
-import firestore from "./datastore/firestore";
+import { call, takeEvery, all } from 'redux-saga/effects';
+import firestore from './datastore/firestore';
 
 function* addTodo(action) {
-  console.log(action)
+  console.log(action);
 
   yield call(
     action =>
       firestore
-        .collection("todos")
+        .collection('todos')
         .doc(action.id.toString())
         .set({
           text: action.text,
@@ -21,7 +21,7 @@ function* toggleTodo(action) {
   yield call(
     action =>
       firestore
-        .collection("todos")
+        .collection('todos')
         .doc(action.id.toString())
         .update({ completed: action.completed }),
     action
@@ -29,6 +29,8 @@ function* toggleTodo(action) {
 }
 
 export default function* rootSaga() {
-  yield takeEvery("ADD-TODO-REQUEST", addTodo);
-  yield takeEvery("TOGGLE-TODO-REQUEST", toggleTodo);
+  yield all([
+    takeEvery('ADD-TODO-REQUEST', addTodo),
+    takeEvery('TOGGLE-TODO-REQUEST', toggleTodo)
+  ]);
 }
